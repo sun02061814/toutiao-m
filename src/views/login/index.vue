@@ -1,7 +1,11 @@
 <template>
   <div class="container">
     <!-- 标题 -->
-    <van-nav-bar title="登录" class="page-nav-bar" />
+    <van-nav-bar title="登录" class="page-nav-bar">
+      <template #left>
+        <van-icon class="toutiao toutiao-zuojiantou"  size="22" @click="$router.back()"/>
+      </template>
+    </van-nav-bar>
     <!-- 表单 -->
     <van-form @submit="onSubmit" ref="userForm">
       <van-field
@@ -132,11 +136,14 @@ export default {
       try {
         // const res = await loginAPI(this.user);
         // console.log(res);
-        const {data} = await loginAPI(this.user);
-        this.$store.commit('setUser',data.data) //调用vuex里mutations的setUser方法，把token数据传递过去
+        const { data } = await loginAPI(this.user);
+        this.$store.commit("setUser", data.data); //调用vuex里mutations的setUser方法，把token数据传递过去
         this.$toast.success("登录成功"); //在一个组件中，再次调用Toast，会清除上一个Toast
+        this.$router.push({
+          path: "/",
+        });
       } catch (err) {
-        // console.log(err);
+        console.log(err);
         if (err.response.status === 400) {
           // console.log("手机号或密码错误！", err);
           Toast.fail("手机号或密码错误！");
@@ -159,14 +166,15 @@ export default {
       this.isShow = true;
       // 3.发送验证码
       try {
-        await sendSms(this.user.mobile)
-        Toast('短信发送成功')
+        await sendSms(this.user.mobile);
+        Toast("短信发送成功");
       } catch (err) {
+        console.log(err);
         this.isShow = false;
-        if(err.response.status==429){
-          return Toast(err.response.data.message)
-        }else{
-          return Toast(err.response.data.message)
+        if (err.response.status == 429) {
+          return Toast(err.response.data.message);
+        } else {
+          return Toast(err.response.data.message);
         }
       }
     },
