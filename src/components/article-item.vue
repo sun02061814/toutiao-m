@@ -1,5 +1,5 @@
 <template>
-  <van-cell class="article-item">
+  <van-cell class="article-item" :to="Roupath">
     <!-- 标题 -->
     <div slot="title" class="title">{{ articleItem.title }}</div>
     <!-- 描述信息 -->
@@ -38,6 +38,11 @@ export default {
       required: true,
     },
   },
+  data(){
+    return {
+      Roupath:`/article/${this.articleItem.art_id}`
+    }
+  }
 };
 </script>
 

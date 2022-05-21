@@ -32,40 +32,42 @@ export default {
   components: {},
 
   computed: {},
+  created(){},
 
   mounted() {},
 
   methods: {
     // 传统的防抖优化
-    // loadSuggest(value) {
-    //   try {
-    //     if (this.timer) clearTimeout(this.timer);
-    //     this.timer = setTimeout(async () => {
-    //       const { data } = await suggestAPI({ q: value });
-    //       this.suggestList = data.data.options;
-    //       if (data.data.options[0] == null) {
-    //         this.suggestList = [];
-    //       }
-    //     }, 500);
-    //   } catch (err) {
-    //     console.log(err);
-    //     this.$toast("获取搜索建议失败！");
-    //   }
-    // },
-
-    // 使用lodash插件，做防抖优化
-    async loadSuggest(val) {
+    loadSuggest(value) {
       try {
-        const { data } = await suggestAPI({ q: val });
-        this.suggestList = data.data.options;
-        if (data.data.options[0] == null) {
-          this.suggestList = [];
-        }
+        if (this.timer) clearTimeout(this.timer);
+        this.timer = setTimeout(async () => {
+          const { data } = await suggestAPI({ q: value });
+          // console.log(this);
+          this.suggestList = data.data.options;
+          if (data.data.options[0] == null) {
+            this.suggestList = [];
+          }
+        }, 500);
       } catch (err) {
         console.log(err);
         this.$toast("获取搜索建议失败！");
       }
     },
+
+    // 使用lodash插件，做防抖优化
+    // async loadSuggest(val) {
+    //   try {
+    //     const { data } = await suggestAPI({ q: val });
+    //     this.suggestList = data.data.options;
+    //     if (data.data.options[0] == null) {
+    //       this.suggestList = [];
+    //     }
+    //   } catch (err) {
+    //     console.log(err);
+    //     this.$toast("获取搜索建议失败！");
+    //   }
+    // },
     replaceStr(item){
       // RegExp 正则表达式构造函数
       // 参数1：匹配模式字符串，它会根据这个字符串创建正则对象
@@ -74,6 +76,7 @@ export default {
       // console.log(reg);
       const htmlStr = `<span class="blue">${this.searchText}</span>`
       // console.log(htmlStr);
+      // if(item==null) return item = ''
       return item.replace(reg,htmlStr)
       // item.replace(/匹配的内容/gi,替换成的内容)
     }

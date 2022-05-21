@@ -64,16 +64,19 @@ export default {
       // 搜索框展示搜索文本
       this.value = val;
       // 将历史记录添加到数组中存储并去重
-      const index = this.searchHistories.indexOf(val);
-      if (index !== -1) {
-        this.searchHistories.splice(index, 1);
-      }
+      // const index = this.searchHistories.indexOf(val);
+      // if (index !== -1) {
+      //   this.searchHistories.splice(index, 1);
+      // }
       this.searchHistories.unshift(val);
+
+      let arr = new Set(this.searchHistories)
+      this.searchHistories = [...arr]
       // 展示搜索结果
       this.isresults = true;
     },
     onCancel() {
-      this.$toast("取消");
+      this.$router.back()
     },
     recallFn(index) {
       this.searchHistories.splice(index, 1);

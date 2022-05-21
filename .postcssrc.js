@@ -21,7 +21,10 @@ module.exports = {
             },
             // propList配置要转换的css属性
             // *表示所有
-            propList: ['*']
+            propList: ['*'],
+
+            // 配置不做rem单位转换的资源文件名
+            exclude:'github-makedown-css'
         }
     }
 }
